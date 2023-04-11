@@ -2,7 +2,7 @@ const express = require('express');
 const { query, validationResult } = require('express-validator');
 
 const router = express.Router();
-const Sale = require('../../models/Sale');
+0
 
 
 //(Step 2 route 1)
