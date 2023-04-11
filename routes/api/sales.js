@@ -2,14 +2,16 @@ const express = require('express');
 const { query, validationResult } = require('express-validator');
 
 const router = express.Router();
-0
 
+
+const Sale = require('../../models/Sale');
 
 //(Step 2 route 1)
 // This API code is creating a sale document by accepting all details in the request body
-router.post('/', async (req, res) => {
+router.post('/insert', async (req, res) => {
     try {
-      // Create a new sale document using the request body
+    
+
 
       console.log(typeof req.body)
 
@@ -24,14 +26,14 @@ router.post('/', async (req, res) => {
       console.log("Ola Amigos")
       console.log(newSale)
     
-      // Save the new sale document to the collection
+      
       await newSale.save();
     
-      // Return the created sale object to the client
+      
       res.status(201).json(newSale);
     } catch (err) {
       console.error(err);
-      // Return a failure message to the client
+      
       res.status(500).json({ message: 'Failed to create sale document' });
     }
     
@@ -66,6 +68,7 @@ router.get('/', async (req, res) => {
   
       res.status(200).json({
         sales: sales,
+        totalCount: count,
         currentPage: page,
         totalPages: Math.ceil(count / perPage)
       });
@@ -78,8 +81,8 @@ router.get('/', async (req, res) => {
   
 //(Step 2 route 3) This API code is for retriveing a particular
 //sales record associate dwith the _id
-// This code is still preliminary
-router.get('/:_id', (req,res)=>{
+
+router.get('/find/:_id', (req,res)=>{
 
    Sale.findById(req.params._id)
    .then(sale=>res.send(sale))
@@ -91,7 +94,7 @@ router.get('/:_id', (req,res)=>{
 //(Step 2 route 5) Thia API code is for updating the sole document based on  
 // request body associated id
 
-router.put('/:_id', async (req, res) => {
+router.put('/update/:_id', async (req, res) => {
 
     console.log(req.params)
 
@@ -121,9 +124,9 @@ router.put('/:_id', async (req, res) => {
 //(Step 2 route 5) This API code is deleting a particular 
 //record associate with _id passed as route parameter
 
-// This code is still preliminary
+
 router.delete('/delete/:_id', (req, res) => {
-    Sale.deleteOne({isbn: req.params._id})
+    Sale.deleteOne({_id: req.params._id})
         .exec()
         .then(() => {
             res.status(201).send('sale Deleted.')
